@@ -9,6 +9,19 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   
   <script>
+  $(window).load(function() {
+     function loadNextLink(url,loadNextLink) 
+  {
+    if(nextLink != "") {
+      return nextLink;
+    }
+    else {
+      return url;
+    }
+  }
+
+  });
+ 
 function load() {
     $.ajaxPrefilter( function (options) {
     if (options.crossDomain && jQuery.support.cors) {
@@ -17,69 +30,39 @@ function load() {
       //options.url = "http://cors.corsproxy.io/url=" + options.url;
     }
   });
-  num = $("#num").val();
   url = $("#link").val();
   name = $("#name").val();
-  found = 0;
-  findNum = 0;
   isLoading = 0;
-  url = url.replace("#comments","").replace("&cpage=","") + "&cpage=";
-  i =1;
+  $('#modal').modal('show');
 
-  function tryGet(i) {
-      $.get(
-          url + i + '#comments',
+       $.get(
+          url,
           function (response) {
-            //  console.log("> ", response);
+             console.log("> ", response);
              $("#viewer").html(response);
 
-            $(".comment-body:contains('"+ name +"')").each(function() {
-                  $("#qtd").text("TÁ ! Encontramos esta pessoa na lista !");
-                  $('#modal').modal('show');
-                  found = 1;
-                  i = num;
-                  $(".ld").fadeOut();
+              $(".innerContainer .leadingColumn a:contains('"+ name +"')").each(function() {
+                  $("#qtd").append("<div class='findItem'><a  target=_blank'  href='"+ $(this).attr("href") +"'>"+ $(this).text() +"<a/></div>");
+                  
+                  
 
-            })
-
+            });
+            nextLink = "http://orkut.google.com/" + $("#viewer .mainContainer .innerContainer a.paginationSeparator:last-child").attr("href");
+            $("#link").val(nextLink);
             $("#viewer").html("");
+
 
       })
       .done(function() {
-        if(found == 0) {
-          if(i <= num) {
-            tryGet(i+1);
-          }
-          else {
-              $(".ld").fadeOut();
-              $("#qtd").text("TÁ NADA !");
-              $('#modal').modal('show');
-          }
-        }
-        else {
-            $(".ld").fadeOut();
-        }
-      });
-    }
+        
+          load();
+         
+        })
 
-
-
-
-  if($.isNumeric(num)) {
-    $(".ld").fadeIn();
-
-    tryGet(i);
-
-
-
+    
   }
-  else {
-    alert("Digite um número de páginas");
-  }
-}
-function closeLoader() {
-  $(".ld").fadeOut();
-}
+
+
   </script>
 
 
@@ -102,7 +85,7 @@ function closeLoader() {
         </div>
         <div class="modal-body">
           <div type="text" id="qtd">
-            <p id="qtd">TÁ NADA !
+            <p id="qtd">Results will show up soon.
             </p>
           </div>
         </div>

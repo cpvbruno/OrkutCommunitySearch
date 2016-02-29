@@ -52,3 +52,25 @@ body {
      display: none;
     text-align: center;
 }
+.findItem {
+    background: white;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #CCC;
+    margin-left: 0px;
+    border-radius: 5px;
+    min-height: 50px;
+    line-height: 35px;
+    box-shadow: 1px 1px 9px 0px #CCC;
+    margin-bottom: 16px;
+     transition: linear all 0.2s;
+}
+.findItem:hover {
+    background-color: #EAEAEA;
+    box-shadow: 3px 3px 13px 1px #CCC;
+    transition: linear all 0.2s;
+}
+
+
+
